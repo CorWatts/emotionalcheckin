@@ -179,7 +179,7 @@ class Behavior extends \yii\base\BaseObject implements BehaviorInterface
      *
      * @returns Array
      */
-    public function getCategories()
+    public static function getCategories()
     {
         $bhvrs_by_cat = AH::index(self::$behaviors, null, 'category_id');
         $cats = AH::index(\common\models\Category::$categories, "id");

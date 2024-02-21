@@ -3,7 +3,6 @@
 namespace common\unit\models;
 
 use Yii;
-use Codeception\Specify;
 use common\models\Behavior;
 
 date_default_timezone_set('UTC');
@@ -14,8 +13,6 @@ date_default_timezone_set('UTC');
 
 class BehaviorTest extends \Codeception\Test\Unit
 {
-    use Specify;
-
     public function testGetCategories()
     {
         $behaviors = Behavior::getCategories();

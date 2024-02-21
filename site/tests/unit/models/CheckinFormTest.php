@@ -7,8 +7,6 @@ use yii\helpers\ArrayHelper as AH;
 
 class CheckinFormTest extends \Codeception\Test\Unit
 {
-    use \Codeception\Specify;
-
     public $behaviors = [
       1 => [
         'making eye contact' => [
@@ -126,9 +124,8 @@ class CheckinFormTest extends \Codeception\Test\Unit
 
     public function testAttributeLabels()
     {
-        $this->specify('attributeLabels should function properly', function () {
-            $model = $this->container->get('\site\models\CheckinForm');
-            expect('attributeLabels should be correct', $this->assertEquals([
+        $model = $this->container->get('\site\models\CheckinForm');
+        expect('attributeLabels should be correct', $this->assertEquals([
             'behaviors1' => 'Restoration',
             'behaviors2' => 'Forgetting Priorities',
             'behaviors3' => 'Anxiety',
@@ -136,45 +133,40 @@ class CheckinFormTest extends \Codeception\Test\Unit
             'behaviors5' => 'Ticked Off',
             'behaviors6' => 'Exhausted',
             'behaviors7' => 'Relapsed/Moral Failure'
-          ], $model->attributeLabels()));
-        });
+        ], $model->attributeLabels()));
     }
 
     public function testSetBehaviors()
     {
-        $this->specify('setBehaviors should function properly', function () {
-            $model = $this->container->get('\site\models\CheckinForm');
+        $model = $this->container->get('\site\models\CheckinForm');
 
-            $model->setBehaviors($this->behaviors);
-            expect('behaviors1 should be correct', $this->assertEquals([ 0 => 7 ], $model->behaviors1));
-            expect('behaviors2 should be correct', $this->assertEquals([ 0 => 12, 1 => 13, 2 => 17, 3 => 18 ], $model->behaviors2));
-            expect('behaviors3 should be correct', $this->assertEquals([ 0 => 28, 1 => 38, 2 => 46 ], $model->behaviors3));
-            expect('behaviors4 should be correct', $this->assertEquals([ 0 => 47, 1 => 56, 2 => 62 ], $model->behaviors4));
-            expect('behaviors5 should be correct', $this->assertEquals([ 0 => 78, 1 => 79 ], $model->behaviors5));
-            expect('behaviors6 should be correct', $this->assertEquals([ 0 => 104 ], $model->behaviors6));
-            expect('behaviors7 should be correct', $this->assertEquals([ 0 => 128 ], $model->behaviors7));
+        $model->setBehaviors($this->behaviors);
+        expect('behaviors1 should be correct', $this->assertEquals([ 0 => 7 ], $model->behaviors1));
+        expect('behaviors2 should be correct', $this->assertEquals([ 0 => 12, 1 => 13, 2 => 17, 3 => 18 ], $model->behaviors2));
+        expect('behaviors3 should be correct', $this->assertEquals([ 0 => 28, 1 => 38, 2 => 46 ], $model->behaviors3));
+        expect('behaviors4 should be correct', $this->assertEquals([ 0 => 47, 1 => 56, 2 => 62 ], $model->behaviors4));
+        expect('behaviors5 should be correct', $this->assertEquals([ 0 => 78, 1 => 79 ], $model->behaviors5));
+        expect('behaviors6 should be correct', $this->assertEquals([ 0 => 104 ], $model->behaviors6));
+        expect('behaviors7 should be correct', $this->assertEquals([ 0 => 128 ], $model->behaviors7));
 
-            $model->setBehaviors($this->behaviors);
-            expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 7 ], $model->behaviors1));
-            expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 12, 1 => 13, 2 => 17, 3 => 18 ], $model->behaviors2));
-            expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 28, 1 => 38, 2 => 46 ], $model->behaviors3));
-            expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 47, 1 => 56, 2 => 62 ], $model->behaviors4));
-            expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 78, 1 => 79 ], $model->behaviors5));
-            expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 104 ], $model->behaviors6));
-            expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 128 ], $model->behaviors7));
-        });
+        $model->setBehaviors($this->behaviors);
+        expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 7 ], $model->behaviors1));
+        expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 12, 1 => 13, 2 => 17, 3 => 18 ], $model->behaviors2));
+        expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 28, 1 => 38, 2 => 46 ], $model->behaviors3));
+        expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 47, 1 => 56, 2 => 62 ], $model->behaviors4));
+        expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 78, 1 => 79 ], $model->behaviors5));
+        expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 104 ], $model->behaviors6));
+        expect('setBehaviors should not append behaviors to existing ones', $this->assertEquals([ 0 => 128 ], $model->behaviors7));
     }
 
     public function testValidateBehaviors()
     {
-        $this->specify('validateBehaviors should function properly', function () {
-            $model = $this->container->get('\site\models\CheckinForm');
-            $model->setBehaviors($this->behaviors);
-            expect('validation should be good', $this->assertTrue($model->validate()));
+        $model = $this->container->get('\site\models\CheckinForm');
+        $model->setBehaviors($this->behaviors);
+        expect('validation should be good', $this->assertTrue($model->validate()));
 
-            $model->behaviors1[0] = 'bad';
-            expect('validation should be bad', $this->assertFalse($model->validate()));
-        });
+        $model->behaviors1[0] = 'bad';
+        expect('validation should be bad', $this->assertFalse($model->validate()));
     }
 
     public function testCompileBehaviors()

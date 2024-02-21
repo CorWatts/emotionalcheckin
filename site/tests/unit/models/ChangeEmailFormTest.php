@@ -7,8 +7,6 @@ use \site\models\ChangeEmailForm;
 
 class ChangeEmailFormTest extends \Codeception\Test\Unit
 {
-    use \Codeception\Specify;
-
     public function testSimpleRulesShouldValidate()
     {
         $user = $this->getUser();
@@ -24,46 +22,44 @@ class ChangeEmailFormTest extends \Codeception\Test\Unit
 
     public function testChangeEmail()
     {
-        $this->specify('changeEmail() should return true and do nothing when the email is already taken', function () {
-            $user = $this->getUser();
-            $user
-        ->expects($this->never())
-        ->method('save');
-            $desired_email = 'new_email@email.com';
-            $user
-        ->method('findByEmail')
-        ->willReturn(true); // true, as a stand-in for some valid user object
+        // changeEmail() should return true and do nothing when the email is already taken
+        $user = $this->getUser();
+        $user
+            ->expects($this->never())
+            ->method('save');
+        $desired_email = 'new_email@email.com';
+        $user
+            ->method('findByEmail')
+            ->willReturn(true); // true, as a stand-in for some valid user object
 
-            $form = new ChangeEmailForm($user);
-            $form->desired_email = $desired_email;
-            $this->assertTrue($form->changeEmail(), 'should always return true');
-            $this->assertNull($user->desired_email, 'should be null because we didn\'t set the new email');
-            $this->assertNotEquals($user->desired_email, $desired_email);
-        });
+        $form = new ChangeEmailForm($user);
+        $form->desired_email = $desired_email;
+        $this->assertTrue($form->changeEmail(), 'should always return true');
+        $this->assertNull($user->desired_email, 'should be null because we didn\'t set the new email');
+        $this->assertNotEquals($user->desired_email, $desired_email);
 
-        $this->specify('changeEmail() should return true, set values, and send an email when the email is available', function () {
-            $user = $this->getUser();
-            $desired_email = 'new_email@email.com';
-            $user
-        ->method('findByEmail')
-        ->willReturn(null);
-            $user->email = 'email@email.com';
+        // changeEmail() should return true, set values, and send an email when the email is available
+        $user = $this->getUser();
+        $desired_email = 'new_email@email.com';
+        $user
+            ->method('findByEmail')
+            ->willReturn(null);
+        $user->email = 'email@email.com';
 
-            $form = new ChangeEmailForm($user);
-            $form->desired_email = $desired_email;
+        $form = new ChangeEmailForm($user);
+        $form->desired_email = $desired_email;
 
-            expect('changeEmail should return true', $this->assertTrue($form->changeEmail()));
+        expect('changeEmail should return true', $this->assertTrue($form->changeEmail()));
 
-            expect('the user\'s desired email should now match what they entered in the form', $this->assertEquals($user->desired_email, $desired_email));
+        expect('the user\'s desired email should now match what they entered in the form', $this->assertEquals($user->desired_email, $desired_email));
 
-            $this->tester->seeEmailIsSent();
-            $emailMessage = $this->tester->grabLastSentEmail();
-            verify($emailMessage)->instanceOf('yii\mail\MessageInterface');
-            verify($emailMessage->getTo())->arrayHasKey($desired_email);
-            verify($emailMessage->getFrom())->arrayHasKey(Yii::$app->params['supportEmail']);
-            verify($emailMessage->getSubject())->equals(Yii::$app->name . ' -- your requested email change');
-            verify($emailMessage->toString())->stringContainsString($user->email);
-        });
+        $this->tester->seeEmailIsSent();
+        $emailMessage = $this->tester->grabLastSentEmail();
+        verify($emailMessage)->instanceOf('yii\mail\MessageInterface');
+        verify($emailMessage->getTo())->arrayHasKey($desired_email);
+        verify($emailMessage->getFrom())->arrayHasKey(Yii::$app->params['supportEmail']);
+        verify($emailMessage->getSubject())->equals(Yii::$app->name . ' -- your requested email change');
+        verify($emailMessage->toString())->stringContainsString($user->email);
     }
 
     private function getUser()

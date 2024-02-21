@@ -8,8 +8,6 @@ use \common\fixtures\UserFixture;
 
 class FsaControllerTest extends \Codeception\Test\Unit
 {
-    use \Codeception\Specify;
-
     /**
      * @return array
      */

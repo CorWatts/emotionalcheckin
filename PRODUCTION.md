@@ -1,7 +1,7 @@
 # The Faster Scale App -- A Production Deployment
 
 ### Pre-requisites
-* PHP >= 7.3
+* PHP >= 8.2
   * Composer
   * Additional PHP modules: php-pgsql, php-gd, php-mbstring
 * NodeJS >= 12 & npm >= 6
