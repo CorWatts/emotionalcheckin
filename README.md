@@ -8,7 +8,7 @@
 These instructions will help you get a local installation set up for development and testing purposes. See the deployment instructions for how to deploy this to a live system.
 
 ### Pre-requisites
-* PHP >= 7.3
+* PHP >= 8.2
   * Composer
   * Additional PHP modules: php-pgsql, php-gd, php-mbstring, php-curl
 * NodeJS >= 12 & npm >= 6
@@ -38,11 +38,21 @@ That should result the browser downloading published asset bundles instead of ea
 
 ## Testing
 Testing is provided by Codeception unit tests. The necessary libraries should have already been installed by Composer. First, the test database and user must be created:
-* Create a PostgreSQL database and user for tests via the following commands:  
+* Create a PostgreSQL database and user for tests via the following SQL:  
 ```sql
 CREATE DATABASE fsatest;  
 CREATE USER fsatest WITH SUPERUSER PASSWORD 'test123';  
 GRANT ALL PRIVILEGES ON DATABASE "fsatest" TO fsatest;  
+```
+or not via SQL
+```bash
+createuser -s -W fsatest   # enter password 'test123' when prompted
+createdb -O fsatest fsatest
+```
+
+Then run migrations within the test database to create the tables
+```bash
+./yii_test migrate
 ```
 
 If you choose to modify the name of db or user or the password, be sure to also modify the corresponding value in `common/config/tests-local.php`.

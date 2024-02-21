@@ -15,8 +15,6 @@ date_default_timezone_set('UTC');
 
 class TimeTest extends \Codeception\Test\Unit
 {
-    use \Codeception\Specify;
-
     public function setUp(): void
     {
         $this->container = new \yii\di\Container;
@@ -47,81 +45,69 @@ class TimeTest extends \Codeception\Test\Unit
 
     public function testGetLocalTime()
     {
-        $this->specify('getLocalTime should function correctly', function () {
-            expect("getLocalTime should work with user's set time", $this->assertEquals($this->time->getLocalTime(), (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d H:i:s")));
-            expect('getLocalTime should work with a custom timezone', $this->assertEquals($this->time->getLocalTime("UTC"), (new DateTime("now"))->format("Y-m-d H:i:s")));
-        });
+        expect("getLocalTime should work with user's set time", $this->assertEquals($this->time->getLocalTime(), (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d H:i:s")));
+        expect('getLocalTime should work with a custom timezone', $this->assertEquals($this->time->getLocalTime("UTC"), (new DateTime("now"))->format("Y-m-d H:i:s")));
     }
 
     public function testConvertLocalToUTC()
     {
-        $this->specify('convertLocalToUTC should function correctly', function () {
-            $la_tz = (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d H:i:s");
+        $la_tz = (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d H:i:s");
 
-            expect('convertLocalToUTC should convert a Los Angeles tz to UTC with the included time', $this->assertEquals($this->time->convertLocalToUTC($la_tz), (new DateTime("now"))->format("Y-m-d H:i:s")));
-            expect('convertLocalToUTC should convert a Los Angeles tz to UTC without the included time', $this->assertEquals($this->time->convertLocalToUTC($la_tz, false), (new DateTime("now"))->format("Y-m-d")));
-            // with UTC
-            $this->container->set('common\interfaces\TimeInterface', function () {
-                return new \common\components\Time('UTC');
-            });
-            $time = $this->container->get('common\interfaces\TimeInterface');
-        
-            $utc_tz = (new DateTime("now"))->format("Y-m-d H:i:s");
-            expect('convertLocalToUTC should convert a UTC tz correctly with the included time', $this->assertEquals($time->convertLocalToUTC($utc_tz), (new DateTime("now"))->format("Y-m-d H:i:s")));
-            expect('convertLocalToUTC should convert a UTC tz correctly without the included time', $this->assertEquals($time->convertLocalToUTC($utc_tz, false), (new DateTime("now"))->format("Y-m-d")));
+        expect('convertLocalToUTC should convert a Los Angeles tz to UTC with the included time', $this->assertEquals($this->time->convertLocalToUTC($la_tz), (new DateTime("now"))->format("Y-m-d H:i:s")));
+        expect('convertLocalToUTC should convert a Los Angeles tz to UTC without the included time', $this->assertEquals($this->time->convertLocalToUTC($la_tz, false), (new DateTime("now"))->format("Y-m-d")));
+        // with UTC
+        $this->container->set('common\interfaces\TimeInterface', function () {
+            return new \common\components\Time('UTC');
         });
+        $time = $this->container->get('common\interfaces\TimeInterface');
+
+        $utc_tz = (new DateTime("now"))->format("Y-m-d H:i:s");
+        expect('convertLocalToUTC should convert a UTC tz correctly with the included time', $this->assertEquals($time->convertLocalToUTC($utc_tz), (new DateTime("now"))->format("Y-m-d H:i:s")));
+        expect('convertLocalToUTC should convert a UTC tz correctly without the included time', $this->assertEquals($time->convertLocalToUTC($utc_tz, false), (new DateTime("now"))->format("Y-m-d")));
     }
 
     public function testConvertUTCToLocal()
     {
-        $this->specify('convertUTCToLocal should function correctly', function () {
-            $utc_tz = (new DateTime("now"))->format("Y-m-d H:i:s");
+        $utc_tz = (new DateTime("now"))->format("Y-m-d H:i:s");
 
-            expect('convertUTCToLocal should convert a UTC tz to Los Angeles with the included timezone', $this->assertEquals((new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format(DateTime::ATOM), $this->time->convertUTCToLocal($utc_tz)));
-            expect('convertUTCToLocal should convert a UTC tz to Los Angeles without the included timezone', $this->assertEquals($this->time->convertUTCToLocal($utc_tz, false), (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d H:i:s")));
+        expect('convertUTCToLocal should convert a UTC tz to Los Angeles with the included timezone', $this->assertEquals((new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format(DateTime::ATOM), $this->time->convertUTCToLocal($utc_tz)));
+        expect('convertUTCToLocal should convert a UTC tz to Los Angeles without the included timezone', $this->assertEquals($this->time->convertUTCToLocal($utc_tz, false), (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d H:i:s")));
 
-            // with UTC
-            $this->container->set('common\interfaces\TimeInterface', function () {
-                return new \common\components\Time('UTC');
-            });
-            $time = $this->container->get('common\interfaces\TimeInterface');
-            $utc_tz = (new DateTime("now"))->format("Y-m-d H:i:s");
-
-            expect('convertLocalToUTC should convert a UTC tz correctly with the included time', $this->assertEquals($time->convertLocalToUTC($utc_tz), (new DateTime("now"))->format("Y-m-d H:i:s")));
-            expect('convertLocalToUTC should convert a UTC tz correctly without the included time', $this->assertEquals($time->convertLocalToUTC($utc_tz, false), (new DateTime("now"))->format("Y-m-d")));
+        // with UTC
+        $this->container->set('common\interfaces\TimeInterface', function () {
+            return new \common\components\Time('UTC');
         });
+        $time = $this->container->get('common\interfaces\TimeInterface');
+        $utc_tz = (new DateTime("now"))->format("Y-m-d H:i:s");
+
+        expect('convertLocalToUTC should convert a UTC tz correctly with the included time', $this->assertEquals($time->convertLocalToUTC($utc_tz), (new DateTime("now"))->format("Y-m-d H:i:s")));
+        expect('convertLocalToUTC should convert a UTC tz correctly without the included time', $this->assertEquals($time->convertLocalToUTC($utc_tz, false), (new DateTime("now"))->format("Y-m-d")));
     }
 
     public function testGetLocalDate()
     {
-        $this->specify('getLocalDate should function correctly', function () {
-            expect("getLocalDate should correctly get the user's local date", $this->assertEquals($this->time->getLocalDate(), (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d")));
-            expect("getLocalDate should correctly get the local date of a specified timezone", $this->assertEquals($this->time->getLocalDate("UTC"), (new DateTime("now", new DateTimeZone("UTC")))->format("Y-m-d")));
-        });
+        expect("getLocalDate should correctly get the user's local date", $this->assertEquals($this->time->getLocalDate(), (new DateTime("now", new DateTimeZone("America/Los_Angeles")))->format("Y-m-d")));
+        expect("getLocalDate should correctly get the local date of a specified timezone", $this->assertEquals($this->time->getLocalDate("UTC"), (new DateTime("now", new DateTimeZone("UTC")))->format("Y-m-d")));
     }
 
     public function testAlterLocalDate()
     {
-        $this->specify('alterLocalDate should function correctly', function () {
-            expect('alterLocalDate should add one day to the local time', $this->assertEquals($this->time->alterLocalDate('2016-05-01 00:00:00', '+1 day'), (new DateTime("2016-05-01 00:00:00 +1 day"))->format("Y-m-d")));
-            expect('alterLocalDate should subtract one week to the local time and change the year correctly', $this->assertEquals($this->time->alterLocalDate('2016-01-01 04:03:00', '-1 week'), (new DateTime("2016-01-01 04:03:00 -1 week"))->format("Y-m-d")));
-        });
+        expect('alterLocalDate should add one day to the local time', $this->assertEquals($this->time->alterLocalDate('2016-05-01 00:00:00', '+1 day'), (new DateTime("2016-05-01 00:00:00 +1 day"))->format("Y-m-d")));
+        expect('alterLocalDate should subtract one week to the local time and change the year correctly', $this->assertEquals($this->time->alterLocalDate('2016-01-01 04:03:00', '-1 week'), (new DateTime("2016-01-01 04:03:00 -1 week"))->format("Y-m-d")));
     }
 
     public function testGetUTCBookends()
     {
-        $this->specify('getUTCBookends should function correctly', function () {
-            expect('getUTCBookends should return false if there is a space in the time string', $this->assertFalse($this->time->getUTCBookends('2016-05-30 00:00:00')));
-            expect('getUTCBookends should return false if there is a space at the start of the time string', $this->assertFalse($this->time->getUTCBookends(' 2016-05-30 00:00:00')));
-            expect('getUTCBookends should return false if there is a space at the end of the time string', $this->assertFalse($this->time->getUTCBookends('2016-05-30 00:00:00 ')));
-            expect('getUTCBookends should return UTC bookend times from the Los_Angeles tz', $this->assertEquals($this->time->getUTCBookends('2016-05-30'), ['2016-05-30 07:00:00', '2016-05-31 06:59:59']));
-            // with UTC
-            $this->container->set('common\interfaces\TimeInterface', function () {
-                return new \common\components\Time('UTC');
-            });
-            $time = $this->container->get('common\interfaces\TimeInterface');
-            expect('getUTCBookends should return UTC bookend times from UTC tz', $this->assertEquals($time->getUTCBookends('2016-05-30'), ['2016-05-30 00:00:00', '2016-05-30 23:59:59']));
+        expect('getUTCBookends should return false if there is a space in the time string', $this->assertFalse($this->time->getUTCBookends('2016-05-30 00:00:00')));
+        expect('getUTCBookends should return false if there is a space at the start of the time string', $this->assertFalse($this->time->getUTCBookends(' 2016-05-30 00:00:00')));
+        expect('getUTCBookends should return false if there is a space at the end of the time string', $this->assertFalse($this->time->getUTCBookends('2016-05-30 00:00:00 ')));
+        expect('getUTCBookends should return UTC bookend times from the Los_Angeles tz', $this->assertEquals($this->time->getUTCBookends('2016-05-30'), ['2016-05-30 07:00:00', '2016-05-31 06:59:59']));
+        // with UTC
+        $this->container->set('common\interfaces\TimeInterface', function () {
+            return new \common\components\Time('UTC');
         });
+        $time = $this->container->get('common\interfaces\TimeInterface');
+        expect('getUTCBookends should return UTC bookend times from UTC tz', $this->assertEquals($time->getUTCBookends('2016-05-30'), ['2016-05-30 00:00:00', '2016-05-30 23:59:59']));
     }
 
     public function testParse()
@@ -153,23 +139,19 @@ class TimeTest extends \Codeception\Test\Unit
         expect('parse should return the default value (false) if the date is not in bounds', $this->assertFalse($observer2->parse('2016-05-05')));
         expect('parse should return the default value if the date is not in bounds', $this->assertEquals($observer2->now()->format('Y-m-d'), $observer2->parse('2016-05-05', $observer2->now())->format('Y-m-d')));
 
-        $this->specify('should all return false', function () {
-            expect('parse should return false if the date itself is empty', $this->assertFalse($this->time->parse('')));
-            expect('parse should return false if the date itself is unacceptable or is in an unacceptable format', $this->assertFalse($this->time->parse('aaaa-aa-aa')));
-            expect('parse should return false if the date is not in bounds', $this->assertFalse($this->time->parse('aaaa-aa-aa')));
-            expect('parse should return false if the date itself is nonsensical', $this->assertFalse($this->time->parse('2018-22-44')));
-        });
+        expect('parse should return false if the date itself is empty', $this->assertFalse($this->time->parse('')));
+        expect('parse should return false if the date itself is unacceptable or is in an unacceptable format', $this->assertFalse($this->time->parse('aaaa-aa-aa')));
+        expect('parse should return false if the date is not in bounds', $this->assertFalse($this->time->parse('aaaa-aa-aa')));
+        expect('parse should return false if the date itself is nonsensical', $this->assertFalse($this->time->parse('2018-22-44')));
 
-        $this->specify('should still work fine with other timezones', function () {
-            $this->time->timezone = 'UTC';
-            $good = new DateTime('2016-05-05', new DateTimeZone('UTC'));
-            expect('parse should accept a String time and verify it is in YYYY-MM-DD format, then return it as a \DateTime', $this->assertEquals($this->time->parse('2016-05-05'), $good));
+        $this->time->timezone = 'UTC';
+        $good = new DateTime('2016-05-05', new DateTimeZone('UTC'));
+        expect('parse should accept a String time and verify it is in YYYY-MM-DD format, then return it as a \DateTime', $this->assertEquals($this->time->parse('2016-05-05'), $good));
 
-            expect('parse should return false if the date itself is empty', $this->assertFalse($this->time->parse('')));
-            expect('parse should return false if the date itself is unacceptable or is in an unacceptable format', $this->assertFalse($this->time->parse('aaaa-aa-aa')));
-            expect('parse should return false if the date is not in bounds', $this->assertFalse($this->time->parse('aaaa-aa-aa')));
-            expect('parse should return false if the date itself is nonsensical', $this->assertFalse($this->time->parse('2018-22-44')));
-        });
+        expect('parse should return false if the date itself is empty', $this->assertFalse($this->time->parse('')));
+        expect('parse should return false if the date itself is unacceptable or is in an unacceptable format', $this->assertFalse($this->time->parse('aaaa-aa-aa')));
+        expect('parse should return false if the date is not in bounds', $this->assertFalse($this->time->parse('aaaa-aa-aa')));
+        expect('parse should return false if the date itself is nonsensical', $this->assertFalse($this->time->parse('2018-22-44')));
     }
 
     public function testInBounds()

@@ -9,7 +9,7 @@ return [
             'charset' => 'utf8',
         ],
         'mail' => [
-            'class' => 'yii\swiftmailer\Mailer',
+            'class' => 'yii\symphonymailer\Mailer',
             'viewPath' => '@common/mail',
             'useFileTransport' => true,
         ],

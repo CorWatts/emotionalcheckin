@@ -11,8 +11,6 @@ use common\components\Controller;
 
 class ControllerTest extends \Codeception\Test\Unit
 {
-    use \Codeception\Specify;
-
     public function testActions()
     {
         $controller = new Controller('test', 'common');

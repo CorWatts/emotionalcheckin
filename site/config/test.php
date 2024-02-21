@@ -7,7 +7,7 @@ $config = [
   'basePath' => dirname(__DIR__),
  'components' => [
    'mailer' => [
-     'class' => yii\swiftmailer\Mailer::class,
+     'class' => \yii\symphonymailer\Mailer::class,
      'viewPath' => '@common/mail',
      'useFileTransport' => true,
    ],

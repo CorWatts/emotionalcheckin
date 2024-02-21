@@ -8,8 +8,6 @@ use \yii\base\InvalidArgumentException;
 
 class ResetPasswordFormTest extends \Codeception\Test\Unit
 {
-    use \Codeception\Specify;
-
     public function testShouldThrowWhenNotPassedAWellFormattedToken()
     {
         $this->expectException(InvalidArgumentException::class);

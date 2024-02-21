@@ -8,8 +8,6 @@ use \yii\base\InvalidArgumentException;
 
 class PasswordResetRequestFormTest extends \Codeception\Test\Unit
 {
-    use \Codeception\Specify;
-
     public function testRulesShouldValidate()
     {
         $user = $this->getUser();

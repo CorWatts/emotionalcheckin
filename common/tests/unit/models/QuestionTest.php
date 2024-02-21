@@ -3,7 +3,6 @@
 namespace common\unit\models;
 
 use Yii;
-use Codeception\Specify;
 use common\models\Question;
 
 /**
@@ -12,8 +11,6 @@ use common\models\Question;
 
 class QuestionTest extends \Codeception\Test\Unit
 {
-    use Specify;
-
     private $question;
     private $questionData = [
     [

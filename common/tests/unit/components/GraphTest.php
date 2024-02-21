@@ -11,8 +11,6 @@ use common\components\Graph;
 
 class GraphTest extends \Codeception\Test\Unit
 {
-    use \Codeception\Specify;
-
     private $user;
     private $filepath = __DIR__.'/../../_output/test_graph.png';
     private $filepath_extra = __DIR__.'/../../_output/charts/test_graph.png';
