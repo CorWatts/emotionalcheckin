@@ -3,7 +3,7 @@ include:
   - site
   - console
 paths:
-  log: console/runtime/logs
+  output: console/runtime/logs
   bootstrap: _bootstrap.php
 settings:
   colors: true

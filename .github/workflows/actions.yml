@@ -11,9 +11,9 @@ jobs:
         os:
           - ubuntu-latest
         php:
-          - "7.3"
-          - "7.4"
-          #- "8.0"
+          - "8.0"
+          - "8.2"
+          - "8.3"
     runs-on: ubuntu-latest
     
     services:
@@ -85,7 +85,7 @@ jobs:
       run: composer test-coverage
       
     - name: Upload to Codecov.io
-      if: matrix.php == '7.4'
+      if: matrix.php == '8.3'
       uses: codecov/codecov-action@v4
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
