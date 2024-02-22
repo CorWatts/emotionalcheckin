@@ -3,7 +3,6 @@
 namespace common\tests\unit\components;
 
 use Yii;
-use Codeception\Specify;
 use common\components\Utility;
 
 /**
@@ -17,7 +16,6 @@ use common\components\Utility;
 
 class UtilityTest extends \Codeception\Test\Unit
 {
-    use Specify;
 
     protected function tearDown(): void
     {
@@ -41,19 +39,17 @@ class UtilityTest extends \Codeception\Test\Unit
 
     public function testGetRevHash()
     {
-        $this->specify('getRevHash should function correctly', function () {
-            expect('getRevHash should return false when the file does not exist', $this->assertFalse(Utility::getRevHash()));
+        expect('getRevHash should return false when the file does not exist', $this->assertFalse(Utility::getRevHash()));
 
-            $this->_createRevFile();
-            expect('getRevHash should return abcdefg', $this->assertEquals('abcdefg', Utility::getRevHash()));
-            chmod(Utility::$REVISION_FILE, 0222);
-            expect('getRevHash should return false when the file is not readable', $this->assertFalse(Utility::getRevHash()));
-            $this->_deleteRevFile();
+        $this->_createRevFile();
+        expect('getRevHash should return abcdefg', $this->assertEquals('abcdefg', Utility::getRevHash()));
+        chmod(Utility::$REVISION_FILE, 0222);
+        expect('getRevHash should return false when the file is not readable', $this->assertFalse(Utility::getRevHash()));
+        $this->_deleteRevFile();
 
-            $this->_createRevFile('abc');
-            expect('getRevHash should return abc when there are less than 7 chars', $this->assertEquals('abc', Utility::getRevHash()));
-            $this->_deleteRevFile();
-        });
+        $this->_createRevFile('abc');
+        expect('getRevHash should return abc when there are less than 7 chars', $this->assertEquals('abc', Utility::getRevHash()));
+        $this->_deleteRevFile();
     }
 
     public function testGetGithubRevUrl()
