@@ -3,7 +3,6 @@
 namespace common\unit\models;
 
 use Yii;
-use Codeception\Specify;
 
 date_default_timezone_set('UTC');
 
@@ -13,8 +12,6 @@ date_default_timezone_set('UTC');
 
 class UserBehaviorTest extends \Codeception\Test\Unit
 {
-    use Specify;
-
     public $singleSimpleBehaviorNoBehavior = [
     [
       'id' => 396,

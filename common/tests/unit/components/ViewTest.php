@@ -11,8 +11,6 @@ use common\components\View;
 
 class ViewTest extends \Codeception\Test\Unit
 {
-    use \Codeception\Specify;
-
     public function testRegisterJson()
     {
         $view = new View();

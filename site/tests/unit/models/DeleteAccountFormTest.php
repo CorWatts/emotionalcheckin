@@ -7,8 +7,6 @@ use \site\models\DeleteAccountForm;
 
 class DeleteAccountFormTest extends \Codeception\Test\Unit
 {
-    use \Codeception\Specify;
-
     public function testRulesShouldValidate()
     {
         $user = $this->getUser();
@@ -26,57 +24,54 @@ class DeleteAccountFormTest extends \Codeception\Test\Unit
 
     public function testDeleteAccount()
     {
-        $this->specify('deleteAccount() should return false if the form does not validate', function () {
-            $user = $this->getUser();
-            $user
-        ->expects($this->never())
-        ->method('delete');
+        // deleteAccount() should return false if the form does not validate
+        $user = $this->getUser();
+        $user
+            ->expects($this->never())
+            ->method('delete');
 
-            $form = new DeleteAccountForm($user);
-            $form->password = '1';
-            $this->assertFalse($form->deleteAccount(), 'deleteAccount should not be successful');
-        });
+        $form = new DeleteAccountForm($user);
+        $form->password = '1';
+        $this->assertFalse($form->deleteAccount(), 'deleteAccount should not be successful');
 
-        $this->specify('deleteAccount() should return false if the user\'s password is incorrect', function () {
-            $user = $this->getUser();
-            $user
-        ->expects($this->never())
-        ->method('delete');
+        // deleteAccount() should return false if the user\'s password is incorrect
+        $user = $this->getUser();
+        $user
+            ->expects($this->never())
+            ->method('delete');
 
-            $form = new DeleteAccountForm($user);
-            $form->password = '1';
-            $this->assertFalse($form->deleteAccount(), 'deleteAccount should not be successful');
-        });
+        $form = new DeleteAccountForm($user);
+        $form->password = '1';
+        $this->assertFalse($form->deleteAccount(), 'deleteAccount should not be successful');
 
-        $this->specify('deleteAccount() should return true, send a notification email, and delete the user when the form validates and the user\'s password is correct', function () {
-            $password = 'password';
-            $user = $this->getUser();
-            $user->email = 'user@example.com';
-            $user->partner_email1 = 'partner1@example.com';
-            $user->setPassword($password);
-            $user
-        ->method('isPartnerEnabled')
-        ->willReturn(true);
+        // deleteAccount() should return true, send a notification email, and delete the user when the form validates and the user's password is correct
+        $password = 'password';
+        $user = $this->getUser();
+        $user->email = 'user@example.com';
+        $user->partner_email1 = 'partner1@example.com';
+        $user->setPassword($password);
+        $user
+            ->method('isPartnerEnabled')
+            ->willReturn(true);
 
-            $user
-        ->expects($this->once())
-        ->method('delete');
+        $user
+            ->expects($this->once())
+            ->method('delete');
 
-            $form = new DeleteAccountForm($user);
-            $form->password = $password;
+        $form = new DeleteAccountForm($user);
+        $form->password = $password;
 
-            $this->assertTrue($form->deleteAccount(), 'should be successful');
+        $this->assertTrue($form->deleteAccount(), 'should be successful');
 
-            $this->tester->seeEmailIsSent();
-            $emailMessage = $this->tester->grabLastSentEmail();
-            verify($emailMessage)->instanceOf('yii\mail\MessageInterface');
-            // an email was sent to both the user
-            // and to partner1. We grab the most recently sent one to examine though, thus partner1
-            verify($emailMessage->getTo())->arrayHasKey('partner1@example.com');
-            verify($emailMessage->getFrom())->arrayHasKey(Yii::$app->params['supportEmail']);
-            verify($emailMessage->getSubject())->equals('user@example.com has deleted their The Faster Scale App account');
-            verify($emailMessage->toString())->stringContainsString($user->email);
-        });
+        $this->tester->seeEmailIsSent();
+        $emailMessage = $this->tester->grabLastSentEmail();
+        verify($emailMessage)->instanceOf('yii\mail\MessageInterface');
+        // an email was sent to both the user
+        // and to partner1. We grab the most recently sent one to examine though, thus partner1
+        verify($emailMessage->getTo())->arrayHasKey('partner1@example.com');
+        verify($emailMessage->getFrom())->arrayHasKey(Yii::$app->params['supportEmail']);
+        verify($emailMessage->getSubject())->equals('user@example.com has deleted their The Faster Scale App account');
+        verify($emailMessage->toString())->stringContainsString($user->email);
     }
 
     private function getUser()

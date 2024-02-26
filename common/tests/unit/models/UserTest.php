@@ -3,7 +3,6 @@
 namespace common\unit\models;
 
 use Yii;
-use Codeception\Specify;
 use common\models\User;
 
 date_default_timezone_set('UTC');
@@ -14,8 +13,6 @@ date_default_timezone_set('UTC');
 
 class UserTest extends \Codeception\Test\Unit
 {
-    use Specify;
-
     private $user;
     private $time;
     private $question;
@@ -138,17 +135,15 @@ class UserTest extends \Codeception\Test\Unit
 
     public function testIsTokenCurrent()
     {
-        $this->specify('isTokenCurrent should function correctly', function () {
-            $good_token = \Yii::$app
-                      ->getSecurity()
-                      ->generateRandomString() . '_' . time();
-            expect('isTokenCurrent should return true if the token is still current/alive', $this->assertTrue($this->user->isTokenCurrent($good_token)));
-            $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
-            $bad_token = \Yii::$app
-                      ->getSecurity()
-                      ->generateRandomString() . '_' . (time() - $expire - 1); // subtract the expiration time and a little more from the current time
-            expect('isTokenCurrent should return false if the token is expired', $this->assertFalse($this->user->isTokenCurrent($bad_token)));
-        });
+        $good_token = \Yii::$app
+            ->getSecurity()
+            ->generateRandomString() . '_' . time();
+        expect('isTokenCurrent should return true if the token is still current/alive', $this->assertTrue($this->user->isTokenCurrent($good_token)));
+        $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
+        $bad_token = \Yii::$app
+            ->getSecurity()
+            ->generateRandomString() . '_' . (time() - $expire - 1); // subtract the expiration time and a little more from the current time
+        expect('isTokenCurrent should return false if the token is expired', $this->assertFalse($this->user->isTokenCurrent($bad_token)));
     }
 
     public function testIsTokenConfirmed()

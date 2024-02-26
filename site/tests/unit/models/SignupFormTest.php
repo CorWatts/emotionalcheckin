@@ -6,8 +6,6 @@ use Yii;
 
 class SignupFormTest extends \Codeception\Test\Unit
 {
-    use \Codeception\Specify;
-
     private $vals = [
     'password'        => 'password',
     'email'           => 'fake@email.com',
@@ -120,27 +118,26 @@ class SignupFormTest extends \Codeception\Test\Unit
 
         /////////////////////////////////////////////////////////////////////
 
-        $this->specify('a brand-new user should be able to sign up', function () use ($form, &$saved) {
-            expect('the form should validate correctly', $this->assertTrue($form->validate()));
-            $user = $form->signup();
-            expect(
-                'signup() should return a newly-saved user when the user does not already exist with the submitted values',
-                $this->assertEquals($user->getAttributes($this->whitelist), array_splice($this->vals, 1))
-            );
-            expect(
-                'the "Remember Me" auth_key value should be set to a random string (defaults to a 32 char length)',
-                $this->assertEquals(32, strlen($user->auth_key))
-            );
-            expect(
-                'password_hash to be set to something like a hash',
-                $this->assertStringStartsWith('$2y$13$', $user->password_hash)
-            );
-            expect(
-                'when the user is created, signup() should call save()',
-                $this->assertTrue($saved)
-            );
-            expect('This user should be an isNewRecord -- they should NOT already exist', $this->assertTrue($user->getIsNewRecord()));
-        });
+        // a brand-new user should be able to sign up
+        expect('the form should validate correctly', $this->assertTrue($form->validate()));
+        $user = $form->signup();
+        expect(
+            'signup() should return a newly-saved user when the user does not already exist with the submitted values',
+            $this->assertEquals($user->getAttributes($this->whitelist), array_splice($this->vals, 1))
+        );
+        expect(
+            'the "Remember Me" auth_key value should be set to a random string (defaults to a 32 char length)',
+            $this->assertEquals(32, strlen($user->auth_key))
+        );
+        expect(
+            'password_hash to be set to something like a hash',
+            $this->assertStringStartsWith('$2y$13$', $user->password_hash)
+        );
+        expect(
+            'when the user is created, signup() should call save()',
+            $this->assertTrue($saved)
+        );
+        expect('This user should be an isNewRecord -- they should NOT already exist', $this->assertTrue($user->getIsNewRecord()));
     }
  
     public function testSignupExistingConfirmedUser()
@@ -155,12 +152,11 @@ class SignupFormTest extends \Codeception\Test\Unit
         $this->existing_user->verify_email_token = $this->getValidToken() . "_confirmed";
         $form2 = $this->getForm();
 
-        $this->specify('an existing and confirmed user should not be signed up', function () use ($form2, &$saved) {
-            expect('the form should validate correctly', $this->assertTrue($form2->validate()));
-            $user = $form2->signup();
-            expect('when the user exists and is confirmed, signup() should return null', $this->assertNull($user));
-            expect('when the user exists and is confirmed, signup() should NOT call save()', $this->assertFalse($saved));
-        });
+        // an existing and confirmed user should not be signed up
+        expect('the form should validate correctly', $this->assertTrue($form2->validate()));
+        $user = $form2->signup();
+        expect('when the user exists and is confirmed, signup() should return null', $this->assertNull($user));
+        expect('when the user exists and is confirmed, signup() should NOT call save()', $this->assertFalse($saved));
     }
 
     public function testSignupExistingUnconfirmedUser()
@@ -179,16 +175,15 @@ class SignupFormTest extends \Codeception\Test\Unit
         $this->user->method('findByEmail')->willReturn($this->existing_user);
         $form3 = $this->getForm();
 
-        $this->specify('an existing and unconfirmed user should be able to sign up again, but their information will be UPDATED', function () use ($form3, &$saved) {
-            expect('the form should validate correctly', $this->assertTrue($form3->validate()));
-            $user = $form3->signup();
-            expect('This user should not be an isNewRecord -- they should already exist', $this->assertFalse($user->getIsNewRecord()));
-            expect(
-                'signup() should return a newly-saved user when the user does not already exist with the submitted values',
-                $this->assertEquals($user->getAttributes($this->whitelist), array_splice($this->vals, 1))
-            );
-            expect('when the user exists and is NOT confirmed, signup() should call save() to UPDATE their info', $this->assertTrue($saved));
-        });
+        // an existing and unconfirmed user should be able to sign up again, but their information will be UPDATED
+        expect('the form should validate correctly', $this->assertTrue($form3->validate()));
+        $user = $form3->signup();
+        expect('This user should not be an isNewRecord -- they should already exist', $this->assertFalse($user->getIsNewRecord()));
+        expect(
+            'signup() should return a newly-saved user when the user does not already exist with the submitted values',
+            $this->assertEquals($user->getAttributes($this->whitelist), array_splice($this->vals, 1))
+        );
+        expect('when the user exists and is NOT confirmed, signup() should call save() to UPDATE their info', $this->assertTrue($saved));
     }
 
     public function testSetFields()
@@ -199,11 +194,10 @@ class SignupFormTest extends \Codeception\Test\Unit
         $form = $this->setAttrs($form, $this->vals);
 
         $result = $form->setFields($this->user);
-        $this->specify('populate should set the values of the user model from the form', function () use ($result) {
-            foreach ($this->whitelist as $attr) {
-                $this->assertEquals($this->vals[$attr], $result->$attr);
-            }
-        });
+        // populate should set the values of the user model from the form
+        foreach ($this->whitelist as $attr) {
+            $this->assertEquals($this->vals[$attr], $result->$attr);
+        }
     }
 
     private function setAttrs($form, array $vals)
