@@ -4,7 +4,7 @@ return [
   'basePath' => dirname(__DIR__),
   'components' => [
     'mailer' => [
-      'class' => yii\swiftmailer\Mailer::class,
+      'class' => 'yii\symphonymailer\Mailer',
       'viewPath' => '@common/mail',
       'useFileTransport' => true,
     ],
