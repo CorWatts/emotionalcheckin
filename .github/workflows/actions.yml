@@ -86,4 +86,6 @@ jobs:
       
     - name: Upload to Codecov.io
       if: matrix.php == '7.4'
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v4
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
