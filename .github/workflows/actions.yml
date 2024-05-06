@@ -36,7 +36,7 @@ jobs:
 
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     
     - name: Setup PHP with Xdebug
       uses: shivammathur/setup-php@v2
@@ -48,12 +48,12 @@ jobs:
     - name: Validate composer.json and composer.lock
       run: composer validate
     
-    - name: Get composer cache directory
+    - name: Get Composer Cache Directory
       id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
+      run: |
+        echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
     - name: Cache Composer packages
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-php${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
