@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1029080150cfa767b08e5f1e0d6eba52",
+    "content-hash": "f3259bd80873cb560e95de8b98edc609",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -101,16 +101,16 @@
         },
         {
             "name": "bower-asset/bootstrap-sass",
-            "version": "v3.4.3",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:twbs/bootstrap-sass.git",
-                "reference": "6b0ca5025c64f2e5696c8719cfce7148c78d0a50"
+                "reference": "b34765d8a6aa775816c59012b2d6b30c4c66a8e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap-sass/zipball/6b0ca5025c64f2e5696c8719cfce7148c78d0a50",
-                "reference": "6b0ca5025c64f2e5696c8719cfce7148c78d0a50"
+                "url": "https://api.github.com/repos/twbs/bootstrap-sass/zipball/b34765d8a6aa775816c59012b2d6b30c4c66a8e9",
+                "reference": "b34765d8a6aa775816c59012b2d6b30c4c66a8e9"
             },
             "require": {
                 "bower-asset/jquery": ">=1.9.1,<4.0"
@@ -6452,7 +6452,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "bower-asset/jquery": 0,
-        "bower-asset/bootstrap-sass": 0,
         "bower-asset/jquery.inputmask": 0,
         "bower-asset/punycode": 0
     },

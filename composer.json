@@ -10,7 +10,7 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-redis": "~2.0.14",
         "bower-asset/jquery": "@stable",
-        "bower-asset/bootstrap-sass": "@stable",
+        "bower-asset/bootstrap-sass": "3.4.1",
         "bower-asset/jquery.inputmask": "@stable",
         "bower-asset/punycode": "@stable",
         "npm-asset/chart.js": "~2.9.4",
